@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Miku Dance - Romeo & Cinderella</title>
+
+  <!--<script src="node_modules/jquery/dist/jquery.min.js" charset="utf-8"></script>-->
+  <script src="node_modules/aframe/dist/aframe-master.js" charset="utf-8"></script>
+  <script src="node_modules/ammo.js/ammo.js" charset="utf-8"></script>
+  <script src="node_modules/aframe-outline/build/aframe-outline.min.js" charset="utf-8"></script>
+  <script src="node_modules/a-mmd/build/a-mmd.min.js" charset="utf-8"></script>
+  <script src="node_modules/aframe-html-shader/dist/aframe-html-shader.min.js" charset="utf-8"></script>
+
+  <link rel="stylesheet" href="assets/css/main.css">
+
+</head>
+<body>
+  <a-scene outline>
+
+    <a-assets>
+      <img id="sky" src="assets/images/stages/castle/bg.jpg">
+    </a-assets>
+
+    <a-sky src="#sky"></a-sky>
+
+    <a-entity mmd="audio:assets/images/songs/romeo_and_cinderella.mp3; audioDelayTime:13.0;">
+      <a-entity mmd-model="model:assets/images/characters/VintageDress/Vintage.pmx; vmd:assets/images/dances/rc_motion.vmd;"></a-entity>
+      <a-entity mmd-model="model:assets/images/stages/castle/full.pmd;"></a-entity>
+    </a-entity>
+
+    <a-light type="ambient" color="#fff"></a-light>
+    <a-light color="#AAA" distance="100" intensity="0.4" type="point"></a-light>
+
+    <a-entity camera look-controls position="0 10 25">
+      <a-entity cursor
+        geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.016"
+        material="color: green"
+        position="0 0 -1">
+      </a-entity>
+
+      <a-entity id="score" geometry="primitive: plane; width: 3; height: 3; depth: 3" position="18 10 -17" material="shader: html; target: #meter-container; transparent: true; ratio: height; fps: 20;"></a-entity>
+    </a-entity>
+
+  </a-scene>
+
+  <!--<div id="meter-container">
+    <div id="badge">
+      <div class="progress">
+        <div class="score"></div>
+      </div>
+    </div>
+  </div>-->
+
+</body>
+</html>

@@ -1,0 +1,35 @@
+{
+  "name": "miku_dance",
+  "version": "0.0.1",
+  "description": "Clon de Just Dance con Vocaloid",
+  "main": "server.js",
+  "dependencies": {
+    "a-mmd": "^1.0.2",
+    "aframe": "^0.6.1",
+    "aframe-animation-component": "^3.2.5",
+    "aframe-event-set-component": "^3.0.3",
+    "aframe-html-shader": "^0.2.0",
+    "aframe-htmltexture-component": "git+https://github.com/scenevr/htmltexture-component.git",
+    "aframe-layout-component": "^4.2.0",
+    "aframe-outline": "^1.1.0",
+    "aframe-template-component": "^3.2.1",
+    "ammo.js": "0.0.10",
+    "connect": "^3.6.3",
+    "jquery": "^3.2.1",
+    "nodejs-websocket": "^1.7.1",
+    "serve-static": "^1.12.4"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "Just",
+    "Dance",
+    "Vocaloid",
+    "A-Frame"
+  ],
+  "author": "Richard Armuelles",
+  "license": "Apache-2.0"
+}

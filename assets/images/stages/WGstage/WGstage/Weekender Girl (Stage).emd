@@ -1,0 +1,8 @@
+[Info]
+Version = 3
+
+[Effect]
+Obj = none
+Obj[11].show = false
+Obj[20] = movie1.fx
+

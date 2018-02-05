@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Miku Dance - Weekender Girl</title>
+
+  <!--<script src="node_modules/jquery/dist/jquery.min.js" charset="utf-8"></script>-->
+  <script src="node_modules/aframe/dist/aframe-master.js" charset="utf-8"></script>
+  <script src="node_modules/ammo.js/ammo.js" charset="utf-8"></script>
+  <script src="node_modules/aframe-outline/build/aframe-outline.min.js" charset="utf-8"></script>
+  <script src="node_modules/a-mmd/build/a-mmd.min.js" charset="utf-8"></script>
+
+</head>
+<body>
+  <a-scene outline>
+
+    <a-entity mmd="audio:assets/images/songs/weekender_girl.mp3;">
+      <a-entity mmd-model="model:assets/images/characters/TDAPansyMiku/PansyMiku.pmx; vmd:assets/images/dances/wg_motion.vmd;"></a-entity>
+      <a-entity mmd-model="model:assets/images/stages/WGstage/WGstage/weekender.pmx; vmd:assets/images/stages/WGstage/motion_weekender.vmd;"></a-entity>
+    </a-entity>
+
+    <a-light type="ambient" color="#fff"></a-light>
+
+    <a-entity camera look-controls position="0 10 15">
+      <a-entity cursor
+        geometry="primitive: ring; radiusInner: 0.01; radiusOuter: 0.016"
+        material="color: green"
+        position="0 0 -1">
+      </a-entity>
+    </a-entity>
+
+  </a-scene>
+</body>
+</html>

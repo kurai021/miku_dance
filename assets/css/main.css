@@ -1,0 +1,49 @@
+#meter-container {
+  position: fixed;
+  z-index: -1;
+  width: 600px;
+}
+
+#meter-container #badge{
+  display: inline-block;
+  z-index: 999;
+  margin-right: 50px;
+  background-image: url("http://3.bp.blogspot.com/-iJXYwpnPvLE/U8PUuaSyNiI/AAAAAAAAAco/PfVMe5QfaLg/s1600/miku_square_face__by_scgm-d5zy1ch.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  width: 100px;
+  height: 100px;
+  border: 5px solid #000;
+  border-radius: 50%;
+}
+
+#meter-container #badge .progress {
+  position: fixed;
+  display: block;
+  z-index: -1;
+  top: 30px;
+  left: 100px;
+  height: 40px;
+  width: 500px;
+  border: 5px solid #000;
+  background: #fff;
+}
+
+#meter-container #badge .progress .score {
+  height: 20px;
+  padding: 10px 0px;
+  text-align: right;
+  width: 0%;
+  background: linear-gradient(90deg, #4CC2B2,#1A8C7D);
+  /*-webkit-animation: animateThis 10s ease-in;
+  -webkit-animation-fill-mode: forwards;*/
+}
+
+/*@-webkit-keyframes animateThis {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}*/

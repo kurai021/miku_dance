@@ -1,0 +1,10 @@
+1-Load stage "Weekender Girl (Stage).pmx"  It is the "WG stage" folder.
+2-Load motion data "Motion Data for Stage.vmd"
+
+3- optional effects: CircleMirror.X (to reflect the floor.)
+DigitalRipple.x (floor ligths)
+
+credits SEGA, 
+stage by Danthrox 
+danthrox.deviantart.com 
+https://www.youtube.com/watch?v=WV7ZR7BuEYo
