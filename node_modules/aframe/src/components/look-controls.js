@@ -1,5 +1,6 @@
 var registerComponent = require('../core/component').registerComponent;
 var THREE = require('../lib/three');
+var DEFAULT_CAMERA_HEIGHT = require('../constants').DEFAULT_CAMERA_HEIGHT;
 var bind = require('../utils/bind');
 
 // To avoid recalculation at every mouse movement tick
@@ -15,6 +16,7 @@ module.exports.Component = registerComponent('look-controls', {
 
   schema: {
     enabled: {default: true},
+    touchEnabled: {default: true},
     hmdEnabled: {default: true},
     reverseMouseDrag: {default: false},
     standing: {default: true}
@@ -26,6 +28,8 @@ module.exports.Component = registerComponent('look-controls', {
     this.previousHMDPosition = new THREE.Vector3();
     this.hmdQuaternion = new THREE.Quaternion();
     this.hmdEuler = new THREE.Euler();
+    this.position = new THREE.Vector3();
+    this.rotation = {};
 
     this.setupMouseControls();
     this.setupHMDControls();
@@ -54,9 +58,19 @@ module.exports.Component = registerComponent('look-controls', {
     var data = this.data;
     if (!data.enabled) { return; }
     this.controls.standing = data.standing;
+    this.controls.userHeight = this.getUserHeight();
     this.controls.update();
     this.updateOrientation();
     this.updatePosition();
+  },
+
+  /**
+   * Return user height to use for standing poses, where a device doesn't provide an offset.
+   */
+  getUserHeight: function () {
+    var el = this.el;
+    var userHeight = el.hasAttribute('camera') && el.getAttribute('camera').userHeight || DEFAULT_CAMERA_HEIGHT;
+    return userHeight;
   },
 
   play: function () {
@@ -159,7 +173,7 @@ module.exports.Component = registerComponent('look-controls', {
     var pitchObject = this.pitchObject;
     var yawObject = this.yawObject;
     var sceneEl = this.el.sceneEl;
-    var rotation;
+    var rotation = this.rotation;
 
     // Calculate HMD quaternion.
     hmdQuaternion = hmdQuaternion.copy(this.dolly.quaternion);
@@ -167,35 +181,27 @@ module.exports.Component = registerComponent('look-controls', {
 
     if (sceneEl.isMobile) {
       // On mobile, do camera rotation with touch events and sensors.
-      rotation = {
-        x: radToDeg(hmdEuler.x) + radToDeg(pitchObject.rotation.x),
-        y: radToDeg(hmdEuler.y) + radToDeg(yawObject.rotation.y),
-        z: radToDeg(hmdEuler.z)
-      };
+      rotation.x = radToDeg(hmdEuler.x) + radToDeg(pitchObject.rotation.x);
+      rotation.y = radToDeg(hmdEuler.y) + radToDeg(yawObject.rotation.y);
+      rotation.z = radToDeg(hmdEuler.z);
     } else if (!sceneEl.is('vr-mode') || isNullVector(hmdEuler) || !this.data.hmdEnabled) {
       // Mouse drag if WebVR not active (not connected, no incoming sensor data).
       currentRotation = this.el.getAttribute('rotation');
       deltaRotation = this.calculateDeltaRotation();
       if (this.data.reverseMouseDrag) {
-        rotation = {
-          x: currentRotation.x - deltaRotation.x,
-          y: currentRotation.y - deltaRotation.y,
-          z: currentRotation.z
-        };
+        rotation.x = currentRotation.x - deltaRotation.x;
+        rotation.y = currentRotation.y - deltaRotation.y;
+        rotation.z = currentRotation.z;
       } else {
-        rotation = {
-          x: currentRotation.x + deltaRotation.x,
-          y: currentRotation.y + deltaRotation.y,
-          z: currentRotation.z
-        };
+        rotation.x = currentRotation.x + deltaRotation.x;
+        rotation.y = currentRotation.y + deltaRotation.y;
+        rotation.z = currentRotation.z;
       }
     } else {
       // Mouse rotation ignored with an active headset. Use headset rotation.
-      rotation = {
-        x: radToDeg(hmdEuler.x),
-        y: radToDeg(hmdEuler.y),
-        z: radToDeg(hmdEuler.z)
-      };
+      rotation.x = radToDeg(hmdEuler.x);
+      rotation.y = radToDeg(hmdEuler.y);
+      rotation.z = radToDeg(hmdEuler.z);
     }
 
     this.el.setAttribute('rotation', rotation);
@@ -221,33 +227,25 @@ module.exports.Component = registerComponent('look-controls', {
   /**
    * Handle positional tracking.
    */
-  updatePosition: (function () {
-    var deltaHMDPosition = new THREE.Vector3();
+  updatePosition: function () {
+    var el = this.el;
+    var currentHMDPosition;
+    var currentPosition;
+    var position = this.position;
+    var previousHMDPosition = this.previousHMDPosition;
+    var sceneEl = this.el.sceneEl;
 
-    return function () {
-      var el = this.el;
-      var currentPosition = el.getAttribute('position');
-      var currentHMDPosition;
-      var previousHMDPosition = this.previousHMDPosition;
-      var sceneEl = this.el.sceneEl;
+    if (!sceneEl.is('vr-mode')) { return; }
 
-      if (!sceneEl.is('vr-mode')) { return; }
+    // Calculate change in position.
+    currentHMDPosition = this.calculateHMDPosition();
 
-      // Calculate change in position.
-      currentHMDPosition = this.calculateHMDPosition();
-      deltaHMDPosition.copy(currentHMDPosition).sub(previousHMDPosition);
+    currentPosition = el.getAttribute('position');
 
-      if (isNullVector(deltaHMDPosition)) { return; }
-
-      previousHMDPosition.copy(currentHMDPosition);
-
-      el.setAttribute('position', {
-        x: currentPosition.x + deltaHMDPosition.x,
-        y: currentPosition.y + deltaHMDPosition.y,
-        z: currentPosition.z + deltaHMDPosition.z
-      });
-    };
-  })(),
+    position.copy(currentPosition).sub(previousHMDPosition).add(currentHMDPosition);
+    el.setAttribute('position', position);
+    previousHMDPosition.copy(currentHMDPosition);
+  },
 
   /**
    * Get headset position from VRControls.
@@ -316,7 +314,7 @@ module.exports.Component = registerComponent('look-controls', {
    * Register touch down to detect touch drag.
    */
   onTouchStart: function (evt) {
-    if (evt.touches.length !== 1) { return; }
+    if (evt.touches.length !== 1 || !this.data.touchEnabled) { return; }
     this.touchStart = {
       x: evt.touches[0].pageX,
       y: evt.touches[0].pageY
@@ -332,7 +330,7 @@ module.exports.Component = registerComponent('look-controls', {
     var deltaY;
     var yawObject = this.yawObject;
 
-    if (!this.touchStarted) { return; }
+    if (!this.touchStarted || !this.data.touchEnabled) { return; }
 
     deltaY = 2 * Math.PI * (evt.touches[0].pageX - this.touchStart.x) / canvas.clientWidth;
 

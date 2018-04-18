@@ -46,16 +46,15 @@ are constrained to looking around and wiggling the controller.
 [Oculus Rift]: https://www.oculus.com/rift/
 [Google Daydream]: https://vr.google.com/daydream/
 [Samsung GearVR]: http://www.samsung.com/global/galaxy/gear-vr/
+[Windows Mixed Reality]: https://developer.microsoft.com/en-us/windows/mixed-reality/
 
-| Headset           | Platform | Positional Tracking | Controllers        | Controller Positional Tracking |
-|-------------------|----------|---------------------|--------------------|---------------------------------|
-| [HTC Vive]        | PC       | :white_check_mark:  | :white_check_mark: | :white_check_mark:              |
-| [Oculus Rift]     | PC       | :white_check_mark:  | :white_check_mark: | :white_check_mark:              |
-| [Google Daydream] | Android  | :x:                 | :white_check_mark: | :x:                             |
-| [Samsung GearVR]  | Android  | :x:                 | :white_check_mark: | :x:                             |
-
-Future headsets to look forward to are Mixed Reality and Augmented Reality
-headsets from Windows, which work with A-Frame on some level.
+| Headset                 | Platform | Positional Tracking | Controllers        | Controller Positional Tracking |
+|-------------------------|----------|---------------------|--------------------|---------------------------------|
+| [HTC Vive]              | PC       | :white_check_mark:  | :white_check_mark: | :white_check_mark:              |
+| [Oculus Rift]           | PC       | :white_check_mark:  | :white_check_mark: | :white_check_mark:              |
+| [Google Daydream]       | Android  | :x:                 | :white_check_mark: | :x:                             |
+| [Samsung GearVR]        | Android  | :x:                 | :white_check_mark: | :x:                             |
+| [Windows Mixed Reality] | PC       | :white_check_mark:  | :white_check_mark: | :white_check_mark:              |
 
 ## What is WebVR?
 
@@ -132,7 +131,7 @@ browsers support WebVR. Chances are, this list will quickly become outdated.
 A-Frame supports VR for any browser that implements the [WebVR
 specification][w3c]:
 
-- [Firefox Nightly](https://www.mozilla.org/en-US/firefox/channel/desktop/) (soon to be on Firefox 55)
+- [Firefox 55+ for Windows](https://www.mozilla.org/en-US/firefox/desktop/)
 - [Experimental builds of Chromium](https://webvr.info/get-chrome/)
 - Chrome for Android (Daydream)
 - Oculus Carmel (GearVR)

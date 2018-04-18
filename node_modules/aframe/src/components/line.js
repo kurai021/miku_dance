@@ -69,5 +69,5 @@ module.exports.Component = registerComponent('line', {
 
 function isEqualVec3 (a, b) {
   if (!a || !b) { return false; }
-  return a.x !== b.x || a.y !== b.y || a.z !== b.z;
+  return (a.x === b.x && a.y === b.y && a.z === b.z);
 }

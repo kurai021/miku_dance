@@ -34,7 +34,9 @@ module.exports.Component = registerComponent('link', {
     var strokeColor = data.highlighted ? data.highlightedColor : data.color;
     el.setAttribute('material', 'strokeColor', strokeColor);
     if (data.on !== oldData.on) { this.updateEventListener(); }
-    if (data.peekMode !== oldData.peekMode) { this.updatePeekMode(); }
+    if (data.visualAspectEnabled && oldData.peekMode !== undefined && data.peekMode !== oldData.peekMode) {
+      this.updatePeekMode();
+    }
     if (!data.image || oldData.image === data.image) { return; }
     el.setAttribute('material', 'pano',
                     typeof data.image === 'string' ? data.image : data.image.src);
@@ -167,6 +169,7 @@ module.exports.Component = registerComponent('link', {
     var scale = new THREE.Vector3();
     var quaternion = new THREE.Quaternion();
     return function () {
+      if (!this.data.visualAspectEnabled) { return; }
       var el = this.el;
       var object3D = el.object3D;
       var camera = el.sceneEl.camera;
@@ -336,7 +339,7 @@ registerShader('portal', {
       'vec2 sampleUV;',
       'float borderThickness = clamp(exp(-vDistance / 50.0), 0.6, 0.95);',
       'sampleUV.y = saturate(direction.y * 0.5  + 0.5);',
-      'sampleUV.x = atan(direction.z, direction.x) * -RECIPROCAL_PI2 + 0.5;',
+      'sampleUV.x = atan(direction.z, -direction.x) * -RECIPROCAL_PI2 + 0.5;',
       'if (vDistanceToCenter > borderThickness && borderEnabled == 1.0) {',
         'gl_FragColor = vec4(strokeColor, 1.0);',
       '} else {',
